@@ -1,38 +1,141 @@
-.App {
+body {
+  margin: 0;
+  font-family: "Segoe UI", sans-serif;
+  background-color: #121212;
+  color: #fff;
+}
+
+.container {
+  padding: 2rem;
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.heading {
+  font-size: 2rem;
+  margin-bottom: 2rem;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.room-tabs {
+  margin-bottom: 2rem;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.room-button {
+  margin: 0.5rem;
+  padding: 0.6rem 1.2rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  background-color: #333;
+  color: #ccc;
+}
+
+.room-button.active {
+  background-color: #00ffff;
+  color: #000;
+}
+
+.devices {
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  flex-wrap: wrap;
+  gap: 1.5rem;
 }
 
-.App-link {
-  color: #61dafb;
+.device-card {
+  background: #1e1e1e;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  width: 150px;
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.2);
+  transition: background 0.3s, transform 0.2s;
+  cursor: pointer;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.device-card:hover {
+  transform: scale(1.05);
+}
+
+.device-card.on {
+  background: #1f4037;
+  box-shadow: 0 0 10px rgba(0, 255, 100, 0.5);
+}
+
+.device-card.off {
+  background: #333;
+  opacity: 0.6;
+}
+
+.transcript-box {
+  margin-top: 2rem;
+  background: #222;
+  padding: 1rem;
+  border-radius: 10px;
+  font-size: 1.1rem;
+}
+
+.command-info {
+  margin-top: 1rem;
+  color: #aaa;
+  font-size: 0.9rem;
+}
+
+.mic-controls {
+  margin-top: 2rem;
+}
+
+.mic-button {
+  background-color: #1f1f1f;
+  color: #00ffff;
+  border: 2px solid #00ffff;
+  padding: 0.8rem 1.5rem;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 50px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 8px rgba(0, 255, 255, 0.2);
+}
+
+.mic-button:hover {
+  background-color: #00ffff;
+  color: #121212;
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+}
+
+.mic-button.active {
+  background-color: #ff003c;
+  border-color: #ff003c;
+  color: #fff;
+  box-shadow: 0 0 15px rgba(255, 0, 60, 0.6);
+}
+
+.mic-button.active:hover {
+  background-color: #ff1f5a;
+  box-shadow: 0 0 25px rgba(255, 0, 90, 0.7);
+}
+
+/* Animations */
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.icon-rotate {
+  animation: rotate 2s linear infinite;
+}
+
+.icon-glow {
+  filter: drop-shadow(0 0 8px yellow);
+}
+
+.icon-glowac{
+  filter: drop-shadow(0 0 8px #00ffff);
+}
+
+.icon-glowred{
+  filter: drop-shadow(0 0 8px #ff0000);
 }
