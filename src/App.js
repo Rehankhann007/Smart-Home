@@ -37,6 +37,22 @@ function App() {
 
   const recognitionRef = useRef(null);
 
+  const speak = (text) => {
+    const utterance = new SpeechSynthesisUtterance(text);
+  
+    // Choose voice (you can specify a more clear voice if you want)
+    const voices = window.speechSynthesis.getVoices();
+    const voice = voices.find(voice => voice.lang === 'en-IN'); // You can try other languages like 'en-US'
+    utterance.voice = voice || voices[0]; // Default to first available voice
+  
+    // Adjust pitch and rate for better clarity
+    utterance.pitch = 1.5;  // Increase pitch for better clarity
+    utterance.rate = 1;     // Default rate, adjust if needed
+  
+    window.speechSynthesis.speak(utterance);
+  };
+  
+
   const startListening = () => {
     if (!recognitionRef.current) {
       const recognition = new window.webkitSpeechRecognition();
@@ -70,49 +86,57 @@ function App() {
     setIsListening(false);
   };
 
-const handleVoiceCommand = (command) => {
-  let matched = false;
+  const handleVoiceCommand = (command) => {
+    let matched = false;
+    let feedback = "";
 
-  deviceList.forEach((device) => {
-    const deviceName = device.name.toLowerCase(); // Jaise "bedroom ac"
+    deviceList.forEach((device) => {
+      const deviceName = device.name.toLowerCase(); // Jaise "bedroom ac"
 
-    // English matching
-    if (
-      command.includes(`turn on ${deviceName}`) ||
-      command.includes(`switch on ${deviceName}`)
-    ) {
-      updateDeviceState(device.id, true);
-      matched = true;
-    } else if (
-      command.includes(`turn off ${deviceName}`) ||
-      command.includes(`switch off ${deviceName}`)
-    ) {
-      updateDeviceState(device.id, false);
-      matched = true;
-    }
-
-    // Hindi matching (only if English match nahi hua)
-    if (!matched) {
+      // English matching
       if (
-        command.includes(`${deviceName} chalu karo`) ||
-        command.includes(`${deviceName} on karo`) ||
-        command.includes(`${deviceName} चालू करो`)
+        command.includes(`turn on ${deviceName}`) ||
+        command.includes(`switch on ${deviceName}`)
       ) {
         updateDeviceState(device.id, true);
+        feedback = `${device.name} turned on`;
         matched = true;
       } else if (
-        command.includes(`${deviceName} band karo`) ||
-        command.includes(`${deviceName} off karo`) ||
-        command.includes(`${deviceName} बंद करो`)
+        command.includes(`turn off ${deviceName}`) ||
+        command.includes(`switch off ${deviceName}`)
       ) {
         updateDeviceState(device.id, false);
+        feedback = `${device.name} turned off`;
         matched = true;
       }
-    }
-  });
-};
 
-  
+      // Hindi matching (only if English match nahi hua)
+      if (!matched) {
+        if (
+          command.includes(`${deviceName} chalu karo`) ||
+          command.includes(`${deviceName} on karo`) ||
+          command.includes(`${deviceName} चालू करो`)
+        ) {
+          updateDeviceState(device.id, true);
+          feedback = `${device.name} चालू हो गया`;
+          matched = true;
+        } else if (
+          command.includes(`${deviceName} band karo`) ||
+          command.includes(`${deviceName} off karo`) ||
+          command.includes(`${deviceName} बंद करो`)
+        ) {
+          updateDeviceState(device.id, false);
+          feedback = `${device.name} बंद हो गया`;
+          matched = true;
+        }
+      }
+    });
+
+    // Speak the feedback
+    if (feedback) {
+      speak(feedback);
+    }
+  };
 
   const updateDeviceState = (id, state) => {
     set(ref(db, `/devices/${id}`), state);
